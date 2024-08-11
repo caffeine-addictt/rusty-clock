@@ -68,4 +68,24 @@ fn main() {
         }
         return;
     }
+
+    // Lookup styles
+    let mut path_to_use = PathBuf::new();
+    let mut default_style = false;
+
+    for style in paths.iter() {
+        if style.file_stem().unwrap().to_str().unwrap() == args.style {
+            path_to_use = style.clone();
+            default_style = true;
+            break;
+        }
+    }
+
+    if !default_style {
+        path_to_use = PathBuf::from(&*args.style);
+
+        if !path_to_use.is_file() {
+            panic!("{}", format!("{} is not a valid style", args.style.clone()));
+        }
+    }
 }
