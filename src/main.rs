@@ -88,4 +88,7 @@ fn main() {
             panic!("{}", format!("{} is not a valid style", args.style.clone()));
         }
     }
+
+    // Load assets
+    let assets = styles::load_styles(&path_to_use);
 }
