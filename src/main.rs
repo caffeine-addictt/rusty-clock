@@ -91,4 +91,20 @@ fn main() {
 
     // Load assets
     let assets = styles::load_styles(&path_to_use);
+
+    // Main event loop
+    loop {
+        // Save cursor position
+        print!("\x1b7");
+
+        let display_array = string::get_display_array();
+
+        // println!("{}", build_string(style_index, args.spacing));
+
+        // Wait
+        thread::sleep(time::Duration::from_millis(100));
+
+        // Reset cursor
+        print!("\x1b8");
+    }
 }
