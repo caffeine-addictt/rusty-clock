@@ -1,4 +1,6 @@
 use std::fs;
+use std::fs::File;
+use std::io::{self, BufRead};
 use std::path::{Path, PathBuf};
 
 pub fn walk_style_dir() -> Vec<PathBuf> {
@@ -21,4 +23,37 @@ pub fn walk_style_dir() -> Vec<PathBuf> {
         }
         Err(_) => Vec::new(),
     }
+}
+
+pub fn load_styles(path: &PathBuf) -> Vec<String> {
+    let mut styles = vec![];
+    let mut buffer = String::new();
+    let separator: &str = "/=/";
+
+    let reader = io::BufReader::new(File::open(path).unwrap());
+    for line in reader.lines() {
+        let unwrapped = line.unwrap();
+
+        // Check if sep push buff
+        if unwrapped.trim_end() == separator {
+            styles.push(buffer);
+            buffer = String::from("");
+        } else {
+            buffer.push_str(&unwrapped)
+        }
+    }
+    styles.push(buffer);
+
+    if styles.len() != 11 {
+        panic!(
+            "{}",
+            format!(
+                "Expected 11 styles, found {} in {}",
+                styles.len(),
+                path.display()
+            )
+        );
+    }
+
+    styles
 }
