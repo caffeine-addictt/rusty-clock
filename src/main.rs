@@ -108,3 +108,5 @@ fn main() {
         print!("\x1b8");
     }
 }
+
+//TODO: Utility to add color
