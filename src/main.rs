@@ -110,3 +110,21 @@ fn main() {
 }
 
 //TODO: Utility to add color
+
+/// Right pad assets
+fn pad_asset(asset: &str) -> impl Iterator<Item = Cow<str>> {
+    let max_len = asset.lines().map(str::len).max().unwrap_or_default();
+
+    asset.lines().map(move |l| {
+        let pad_len = max_len - l.len();
+        if pad_len == 0 {
+            return Cow::Borrowed(l);
+        }
+
+        let mut line = String::from(l);
+        repeat('-')
+            .take(pad_len)
+            .for_each(|c| line.push(c));
+        Cow::Owned(line)
+    })
+}
