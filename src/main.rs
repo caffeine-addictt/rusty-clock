@@ -51,4 +51,21 @@ fn main() {
         println!("Parsed style: {}", args.style);
         println!("Parsed list_styles: {}", args.list_styles);
     }
+
+    let paths = styles::walk_style_dir();
+
+    // Handle list flags
+    if args.list_styles {
+        if paths.is_empty() {
+            println!("No styles found!");
+            return;
+        }
+
+        println!("Use a style with: rusty-clock -s <style>");
+        println!("Available styles:");
+        for style in paths.iter() {
+            println!("  {:?}", style.file_stem().unwrap().to_str().unwrap());
+        }
+        return;
+    }
 }
