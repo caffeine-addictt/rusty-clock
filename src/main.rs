@@ -22,6 +22,10 @@ struct Args {
     #[arg(short, long, default_value_t = String::from("curvy"))]
     style: String,
 
+    /// How many frames to render a second
+    #[arg(long, default_value_t = 60)]
+    fps: u8,
+
     /// Whether to run it in debug mode
     #[arg(short, long, default_value_t = false)]
     debug: bool,
@@ -96,6 +100,7 @@ fn main() {
     }
 
     // Main event loop
+    let wait_time = 1000 / u64::from(args.fps);
     loop {
         // Save cursor position
         print!("\x1b7");
@@ -111,7 +116,7 @@ fn main() {
         );
 
         // Wait
-        thread::sleep(time::Duration::from_millis(100));
+        thread::sleep(time::Duration::from_millis(wait_time));
 
         // Reset cursor
         print!("\x1b8");
