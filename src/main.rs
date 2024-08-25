@@ -55,8 +55,7 @@ fn main() {
     // Handle list flags
     if args.list_styles {
         if paths.is_empty() {
-            println!("No styles found!");
-            return;
+            return exit("No styles found!", 1);
         }
 
         println!("Use a style with: rusty-clock -s <style>");
@@ -83,7 +82,7 @@ fn main() {
         path_to_use = PathBuf::from(&*args.style);
 
         if !path_to_use.is_file() {
-            panic!("{}", format!("{} is not a valid style", args.style.clone()));
+            return exit(&format!("{} is not a valid style", args.style.clone()), 1);
         }
     }
 
@@ -107,4 +106,7 @@ fn main() {
     }
 }
 
+fn exit(msg: &str, code: i32) {
+    println!("{}", msg);
+    std::process::exit(code);
 }
