@@ -91,6 +91,9 @@ fn main() {
 
     // Load assets
     let assets = styles::load_styles(&path_to_use);
+    if args.debug {
+        println!("Parsed assets: {:?}", assets);
+    }
 
     // Main event loop
     loop {
@@ -98,6 +101,9 @@ fn main() {
         print!("\x1b7");
 
         let display_array = string::get_display_array();
+        if args.debug {
+            println!("Parsed display_array: {:?}", display_array);
+        }
 
         println!(
             "{}",
