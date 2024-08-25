@@ -39,7 +39,8 @@ pub fn load_styles(path: &PathBuf) -> Vec<String> {
             styles.push(buffer);
             buffer = String::from("");
         } else {
-            buffer.push_str(&unwrapped)
+            buffer.push_str(&unwrapped);
+            buffer.push('\n');
         }
     }
     styles.push(buffer);
