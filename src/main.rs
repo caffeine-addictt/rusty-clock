@@ -1,4 +1,5 @@
 use clap::Parser;
+use colored::Colorize;
 use std::path::PathBuf;
 use std::{thread, time};
 
@@ -9,9 +10,9 @@ mod styles;
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
 struct Args {
-    /// The color to display in
-    #[arg(short, long, default_value_t = 218)]
-    color: u8,
+    /// The color to display in [red|green|etc.]
+    #[arg(short, long, default_value_t = String::from("white"))]
+    color: String,
 
     // The spacing between each digits
     #[arg(long, default_value_t = 2)]
@@ -30,12 +31,6 @@ struct Args {
     list_styles: bool,
 }
 
-impl Args {
-    fn get_ascii(&self) -> u8 {
-        self.color
-    }
-}
-
 /// Entrypoint
 /// Parsing arguments
 fn main() {
@@ -49,6 +44,14 @@ fn main() {
         println!("Parsed style: {}", args.style);
         println!("Parsed list_styles: {}", args.list_styles);
     }
+
+    // manage colors
+    let color: colored::Color = match args.color.parse() {
+        Ok(c) => c,
+        Err(_) => {
+            return exit(&format!("{} is an invalid color", args.color), 1);
+        }
+    };
 
     let paths = styles::walk_style_dir();
 
@@ -96,7 +99,10 @@ fn main() {
 
         let display_array = string::get_display_array();
 
-        // println!("{}", build_string(style_index, args.spacing));
+        println!(
+            "{}",
+            string::build_string(display_array, &assets, 2, args.debug).color(color)
+        );
 
         // Wait
         thread::sleep(time::Duration::from_millis(100));
